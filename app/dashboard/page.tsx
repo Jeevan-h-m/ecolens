@@ -25,7 +25,6 @@ export default function Dashboard() {
       return acc;
     },
     {} as Record<string, number>
-  ) as Record<string, number>
   );
 
   const bestScore = history.length
@@ -140,7 +139,7 @@ export default function Dashboard() {
                 <div className="flex gap-2 items-end h-12">
                   {["A", "B", "C", "D", "E"].map((s) => {
                     const count = scoreCount[s] || 0;
-                    const max = Math.max(...Object.values(scoreCount) as number[]);
+                    const max = Math.max(...(Object.values(scoreCount) as number[]));
                     const pct = max ? (count / max) * 100 : 0;
                     return (
                       <div key={s} className="flex-1 flex flex-col items-center gap-1">
