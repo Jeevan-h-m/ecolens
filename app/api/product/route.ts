@@ -5,28 +5,26 @@ export async function GET(req: Request) {
   const name = searchParams.get("name");
 
   if (!name) {
-    return NextResponse.json(
-      { error: "No product name provided" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "No product name provided" }, { status: 400 });
   }
 
   try {
     const response = await fetch(
-      `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${name}&json=true`,
+      `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(name)}&search_simple=1&action=process&json=1&page_size=10&fields=product_name,brands,packaging,ingredients_text,ecoscore_grade,nutriscore_grade,categories,countries_tags`,
+      { headers: { "User-Agent": "EcoLensAI/1.0" } }
     );
 
     const data = await response.json();
 
-    if (!data.products.length) {
-      return NextResponse.json({});
+    if (!data.products || data.products.length === 0) {
+      return NextResponse.json({ error: "not found" }, { status: 404 });
     }
 
-    // Try to find best English match first
+    const withName = data.products.filter((p: any) => p.product_name);
     const bestMatch =
-      data.products.find((p: any) =>
-        p.product_name?.toLowerCase().includes(name.toLowerCase()),
-      ) || data.products[0];
+      withName.find((p: any) =>
+        p.product_name?.toLowerCase().includes(name.toLowerCase())
+      ) || withName[0] || data.products[0];
 
     return NextResponse.json(bestMatch);
   } catch (error) {
