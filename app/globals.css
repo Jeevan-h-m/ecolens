@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+:root {
+  --font-syne: var(--font-geist-sans, sans-serif);
+  --font-dm: var(--font-geist-sans, sans-serif);
+  --green-glow: rgba(74, 222, 128, 0.15);
+  --card-bg: rgba(10, 26, 15, 0.85);
+  --border-subtle: rgba(74, 222, 128, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-dm);
+  background-color: #040d08;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-syne);
+}
+
+/* Noise overlay for texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* Grid bg */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(74, 222, 128, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 222, 128, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Score badge colors */
+.score-a { background: linear-gradient(135deg, #166534, #15803d); color: #86efac; border-color: #22c55e40; }
+.score-b { background: linear-gradient(135deg, #1e3a5f, #1d4ed8); color: #93c5fd; border-color: #3b82f640; }
+.score-c { background: linear-gradient(135deg, #713f12, #a16207); color: #fde68a; border-color: #eab30840; }
+.score-d { background: linear-gradient(135deg, #7c2d12, #c2410c); color: #fdba74; border-color: #f9731640; }
+.score-e { background: linear-gradient(135deg, #7f1d1d, #dc2626); color: #fca5a5; border-color: #ef444440; }
+
+/* Progress bar shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.loading-pulse {
+  animation: shimmer 1.5s infinite;
+  background: linear-gradient(90deg, #1a2e1f 25%, #2a4a32 50%, #1a2e1f 75%);
+  background-size: 200% 100%;
+}
+
+/* Card glow on hover */
+.eco-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.eco-card:hover {
+  border-color: rgba(74, 222, 128, 0.25);
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.06);
+}
+
+/* Input styling */
+.eco-input {
+  background: rgba(10, 26, 15, 0.6);
+  border: 1px solid rgba(74, 222, 128, 0.15);
+  color: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.eco-input:focus {
+  outline: none;
+  border-color: rgba(74, 222, 128, 0.4);
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.08);
+}
+
+.eco-input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+/* Animated scan line */
+@keyframes scanDown {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(400%); opacity: 0; }
+}
+
+.scan-line {
+  animation: scanDown 2s ease-in-out infinite;
+}
+
+/* Fade in */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  animation: fadeUp 0.4s ease forwards;
+}
+
+/* Stagger delays */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
